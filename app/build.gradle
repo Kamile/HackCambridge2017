@@ -24,3 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.google.android.gms:play-services:9.8.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

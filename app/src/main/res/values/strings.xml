@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HackCambridge2017</string>
+    <string name="app_name">Adapt</string>
 
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -11,4 +11,26 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_analytics">Analytics</string>
+    <string name="title_activity_login">Login with Google </string>
+
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="signed_in">Signed in</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="signed_out">Signed out</string>
+    <string name="signed_in_err">"Error: please check logs."</string>
+    <string name="title_text">Sign in with Google </string>
+    <string name="loading">Loading…</string>
+
+
+    <!-- Content Description for images -->
+    <string name="desc_google_icon">Google Logo</string>
+
+    <!-- Rationale for asking for Contacts -->
+    <string name="contacts_permission_rationale">Contacts access is needed in order to retrieve your email address.</string>
+
+
+    <string name="hello_world">Hello World. </string>
 </resources>

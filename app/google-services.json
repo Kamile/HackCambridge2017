@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "82794670188",
+    "project_id": "hackcambridge2017"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82794670188:android:84f043b264b2f759",
+        "android_client_info": {
+          "package_name": "uk.ac.cam.km662.hackcambridge2017"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "82794670188-a6245j3v42mskd9dba0q9sbff8mv8gli.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uk.ac.cam.km662.hackcambridge2017",
+            "certificate_hash": "D29A597693A72823D49C148CA846FDBE9E98309C"
+          }
+        },
+        {
+          "client_id": "82794670188-cldmktjf5rqvquv6uoc80p8hrkads5ql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw9TLhsethXEDnhpz08Em4DifiwoMqO3E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

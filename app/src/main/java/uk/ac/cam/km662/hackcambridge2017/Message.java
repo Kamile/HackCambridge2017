@@ -13,6 +13,7 @@ public class Message {
         this.direction = direction;
     }
     
+    
     public String getMessage() {
         return message;
     }
@@ -22,8 +23,6 @@ public class Message {
     }
 
     public int getDirection() { return direction;}
+    public void setDirection(int direction) {this.direction = direction;}
 
-    public void setDate(int direction) {
-        this.direction = direction;
-    }
  }

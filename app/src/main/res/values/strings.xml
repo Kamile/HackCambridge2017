@@ -33,7 +33,7 @@
 
 
     <!-- Chatbot -->
-    <string name="message_ellipses">... </string>
+    <string name="message_ellipses">Type a message . . . </string>
 
 
 

@@ -46,7 +46,17 @@ public class MessageAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
-    
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int i) {
+        //return messages.get(i).second;
+    }
+
 
     //Adapter to create message bubbles to add to listview
 

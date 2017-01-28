@@ -50,7 +50,7 @@
                 android:layout_alignParentRight="true"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
-                android:text="Hello, how are you?"
+                android:text=". . . "
                 />
 
         </RelativeLayout>

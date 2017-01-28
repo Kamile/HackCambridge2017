@@ -32,5 +32,11 @@
     <string name="contacts_permission_rationale">Contacts access is needed in order to retrieve your email address.</string>
 
 
+    <!-- Chatbot -->
+    <string name="message_ellipses">... </string>
+
+
+
+
     <string name="hello_world">Hello World. </string>
 </resources>

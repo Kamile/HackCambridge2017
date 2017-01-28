@@ -69,13 +69,12 @@ import com.google.android.gms.common.api.Status;
  * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
  * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
  */
-public class Login extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class Login extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
     private GoogleApiClient mGoogleApiClient;
-    private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -83,35 +82,28 @@ public class Login extends FragmentActivity implements GoogleApiClient.OnConnect
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Views
-        //mStatusTextView = (TextView) findViewById(R.id.status);
-
         // Button listeners
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
-        //findViewById(R.id.sign_out_button).setOnClickListener(this);
-        //findViewById(R.id.disconnect_button).setOnClickListener(this);
+        findViewById(R.id.sign_in_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
 
-        // [START configure_signin]
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        // [END configure_signin]
 
-        // [START build_client]
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        // [END build_client]
 
-        // [START customize_button]
-        // Set the dimensions of the sign-in button.
-        //SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        // [END customize_button]
     }
 
     @Override
@@ -140,7 +132,6 @@ public class Login extends FragmentActivity implements GoogleApiClient.OnConnect
         }
     }
 
-    // [START onActivityResult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -151,18 +142,17 @@ public class Login extends FragmentActivity implements GoogleApiClient.OnConnect
             handleSignInResult(result);
         }
     }
-    // [END onActivityResult]
 
-    // [START handleSignInResult]
+
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully.
             GoogleSignInAccount acct = result.getSignInAccount();
 
-            //Intent intent = new Intent(Login.this, ChatbotTeacher.class);
-            //Login.this.startActivity(intent);
-            //Login.this.finish();
+            Intent intent = new Intent(Login.this, ChatbotTeacher.class);
+            Login.this.startActivity(intent);
+            Login.this.finish();
 
 
         }
@@ -171,14 +161,12 @@ public class Login extends FragmentActivity implements GoogleApiClient.OnConnect
 //            updateUI(false);
 //        }
     }
-    // [END handleSignInResult]
 
-    // [START signIn]
+
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    // [END signIn]
 
     // [START signOut]
 //    private void signOut() {
@@ -231,30 +219,4 @@ public class Login extends FragmentActivity implements GoogleApiClient.OnConnect
         }
     }
 
-//    private void updateUI(boolean signedIn) {
-//        if (signedIn) {
-//            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-//            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-//        } else {
-//            mStatusTextView.setText(R.string.signed_out);
-//
-//            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-//            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
-//        }
-//    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.sign_in_button:
-                signIn();
-                break;
-//            case R.id.sign_out_button:
-//                signOut();
-//                break;
-//            case R.id.disconnect_button:
-//                revokeAccess();
-//                break;
-        }
-    }
 }

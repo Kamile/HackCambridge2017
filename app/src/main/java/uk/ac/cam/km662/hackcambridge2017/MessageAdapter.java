@@ -20,14 +20,14 @@ public class MessageAdapter extends BaseAdapter {
     public static final int DIRECTION_USER = 1;
 
     private LayoutInflater layoutInflater;
-    private ArrayList<String> messages;
+    private ArrayList<Message> messages;
 
     public MessageAdapter(Activity activity) {
         layoutInflater = activity.getLayoutInflater();
-        messages = new ArrayList<String>();
+        messages = new ArrayList<Message>();
     }
 
-    public void addMessage(String message, int direction) {
+    public void addMessage(Message message) {
         messages.add(message);
         notifyDataSetChanged();
     }
@@ -39,7 +39,7 @@ public class MessageAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return messages.get(i);
+        return messages.get(i).getMessage();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class MessageAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int i) {
-        //return messages.get(i).second;
+        return messages.get(i).getDirection();
     }
 
 
@@ -76,8 +76,7 @@ public class MessageAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(res, viewGroup, false);
         }
 
-        String message = messages.get(i);
-
+        String message = messages.get(i).getMessage();
         TextView txtMessage = (TextView) convertView.findViewById(R.id.txtMessage);
         txtMessage.setText(message);
 

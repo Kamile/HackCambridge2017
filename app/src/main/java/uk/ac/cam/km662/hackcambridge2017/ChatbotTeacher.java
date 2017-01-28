@@ -65,14 +65,8 @@ public class ChatbotTeacher extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please enter a message", Toast.LENGTH_LONG).show();
             return;
         }
-
-
-
-        messageAdapter.addMessage(messageBody, MessageAdapter.DIRECTION_USER);
-//
-
-
-        //need to notify datasetchanged
+        Message userMessage = new Message(messageBody, MessageAdapter.DIRECTION_USER);
+        messageAdapter.addMessage(userMessage);
         messageBodyField.setText("");
         messageBodyField.setHint("Type a message . . . ");
     }

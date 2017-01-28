@@ -50,6 +50,8 @@ public class ChatbotTeacher extends AppCompatActivity {
             return;
         }
 
+        LayoutInflater inflater = this.getLayoutInflater();
+
         userMessage = getLayoutInflater().inflate(R.layout.user_message,  null);
         txtMessage.setText(messageBody);
         messagesList.addView(userMessage);

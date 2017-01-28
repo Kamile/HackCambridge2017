@@ -45,11 +45,6 @@ public class ChatbotTeacher extends AppCompatActivity {
         messagesList.setAdapter(messageAdapter);
 
 
-
-        //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
-        //messagesList.setAdapter(adapter);
-
-
         //listen for a click on the send button
         findViewById(R.id.sendButton).setOnClickListener(new View.OnClickListener() {
             @Override

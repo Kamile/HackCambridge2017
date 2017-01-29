@@ -57,13 +57,6 @@ public class ChatbotTeacher extends AppCompatActivity {
         messageBodyField = (EditText) findViewById(R.id.messageBodyField);
         messagesList = (ListView) findViewById(R.id.listMessages);
         sendButton = (Button) findViewById(R.id.SendButton);
-        
-      //do we need this?
-        TextView meLabel = (TextView) findViewById(R.id.meLbl);
-        TextView companionLabel = (TextView) findViewById(R.id.friendLabel);
-        RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-        companionLabel.setText("Chat Bot");// Hard Coded
-        sayHelloToClient();
 
         messageAdapter = new MessageAdapter(this);
         messagesList.setAdapter(messageAdapter);

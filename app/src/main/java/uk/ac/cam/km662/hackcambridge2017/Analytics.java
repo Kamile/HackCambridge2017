@@ -1,37 +1,46 @@
 package uk.ac.cam.km662.hackcambridge2017;
 
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 
 public class Analytics extends AppCompatActivity {
+
+    private static final String PREFS_NAME = "Cache";
+    private ImageView userProfilePic;
+    private TextView analyticsGreeting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analytics);
+
+        userProfilePic = (ImageView) findViewById(R.id.user_profile_pic);
+        analyticsGreeting = (TextView) findViewById(R.id.analytics_title);
+
+        // Restore preferences
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        // If can't find name, just call them buddy
+        String username = settings.getString("username", "buddy");
+        String profilePictureUrl = settings.getString("profilePicture",
+                "https://www.google.co.uk/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwjW8P3InObRAhWB7hoKHUcmAUkQjRwIBw&url=http%3A%2F%2Fwww.visualsays.com%2Fcat-pictures%2F&psig=AFQjCNFYlAWBYnAQEm2Ka3T0kkIzxHpN3g&ust=1485740424989722");
+
+
+        analyticsGreeting.setText("Your Progress, " + username);
+        Picasso.with(getApplicationContext()).load(profilePictureUrl)
+                .transform(new CircleTransform()).into(userProfilePic);
+
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_analytics, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -4,9 +4,28 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@drawable/gradient_background"
     tools:context="uk.ac.cam.km662.hackcambridge2017.Analytics">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/user_profile_pic"
+        android:layout_margin="15dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/hand"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/smiley"/>
+
+    <TextView
+        android:id="@+id/analytics_title"
+        android:text="Your Progress, {User}"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_profile_pic"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="24sp"
+        android:textColor="#FFF"/>
 
 </RelativeLayout>

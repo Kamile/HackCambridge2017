@@ -11,12 +11,26 @@
     android:background="@drawable/gradient_background"
     tools:context="uk.ac.cam.km662.hackcambridge2017.ChatbotTeacher">
 
+    <!-- Smiley button to get to Analytics -->
+
+    <ImageButton
+        android:id="@+id/smileyButton"
+        android:layout_margin="5dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/hand"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/smiley"
+        android:contentDescription="Waving hand, button to access Analytics"/>
+
     <ListView
         android:id="@+id/listMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:transcriptMode="alwaysScroll"
         android:layout_above="@+id/divider"
+        android:layout_below="@+id/smileyButton"
         android:padding="0dip"
         android:divider="@null"
         android:dividerHeight="0dp" android:stackFromBottom="true" tools:listitem="@layout/bot_message"/>
@@ -53,11 +67,13 @@
 
         <Button
             android:id="@+id/sendButton"
-            android:layout_width="72dp"
+            android:layout_width="24dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_margin="4dp"
-            android:background="@drawable/button_send" />
+            android:background="@drawable/ic_send_black_24dp" />
+
+
     </RelativeLayout>
 
 </RelativeLayout>

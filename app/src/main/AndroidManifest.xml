@@ -24,8 +24,12 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <meta-data android:name="botPrimaryToken" android:value="4eC0slpFw1M.cwA.dxw.9-LnkyGl1PBQBgs2nPRIfQOWL4S3XaFbQSDgJ_HBP2Y"/> 
-        <meta-data android:name="botName" android:value="learningbuddy"/>
+
+        <meta-data android:name="botPrimaryToken"
+            android:value="4eC0slpFw1M.cwA.dxw.9-LnkyGl1PBQBgs2nPRIfQOWL4S3XaFbQSDgJ_HBP2Y"/>
+
+        <meta-data android:name="botName"
+            android:value="learningbuddy"/>
 
         <activity android:name=".LoadPage">
             <intent-filter>
@@ -45,21 +49,13 @@
         <activity
             android:name=".ChatbotTeacher" />
 
-
         <activity
             android:name=".Settings"
             android:label="@string/app_name" />
 
-
         <activity
             android:name=".Analytics"
             android:label="@string/title_activity_analytics" />
-
-
-
-
-
-
 
     </application>
 

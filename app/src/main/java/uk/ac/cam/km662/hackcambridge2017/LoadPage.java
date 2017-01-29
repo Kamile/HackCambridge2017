@@ -17,8 +17,8 @@ public class LoadPage extends AppCompatActivity {
             @Override
             public void run() {
                /* Create an Intent that will start the Login Activity. */
-                Intent mainIntent = new Intent(LoadPage.this, Login.class);
-                LoadPage.this.startActivity(mainIntent);
+                Intent intent = new Intent(LoadPage.this, Login.class);
+                LoadPage.this.startActivity(intent);
                 LoadPage.this.finish();
             }
         }, 3000);

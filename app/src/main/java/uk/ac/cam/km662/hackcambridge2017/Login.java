@@ -9,6 +9,7 @@ import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -63,19 +64,18 @@ import com.google.android.gms.common.api.Status;
 
 /**
  * A login screen that offers login via email/password and via Google+ sign in.
- * <p/>
- * ************ IMPORTANT SETUP NOTES: ************
- * In order for Google+ sign in to work with your app, you must first go to:
- * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
- * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
  */
 public class Login extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "SignInActivity";
+    private static final String PREFS_NAME = "Cache";
     private static final int RC_SIGN_IN = 9001;
 
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
+
+    public Uri PERSON_PHOTO;
+    public String PERSON_NAME;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +89,8 @@ public class Login extends FragmentActivity implements GoogleApiClient.OnConnect
                 signIn();
             }
         });
+
+
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -149,12 +151,12 @@ public class Login extends FragmentActivity implements GoogleApiClient.OnConnect
         if (result.isSuccess()) {
             // Signed in successfully.
             GoogleSignInAccount acct = result.getSignInAccount();
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
+            //PERSON_NAME = acct.getDisplayName();
+            PERSON_NAME = acct.getGivenName();
             String personFamilyName = acct.getFamilyName();
             String personEmail = acct.getEmail();
             String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
+            PERSON_PHOTO = acct.getPhotoUrl();
 
 
 
@@ -227,4 +229,18 @@ public class Login extends FragmentActivity implements GoogleApiClient.OnConnect
         }
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        // Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("username", PERSON_NAME);
+        editor.putString("profilePicture", PERSON_PHOTO.toString());
+
+        // Commit the edits
+        editor.apply();
+    }
 }

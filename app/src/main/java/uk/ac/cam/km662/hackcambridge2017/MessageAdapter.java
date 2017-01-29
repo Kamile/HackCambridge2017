@@ -58,6 +58,11 @@ public class MessageAdapter extends BaseAdapter {
     }
 
 
+    @Override
+    public boolean isEnabled(int position) {
+        return false;
+    }
+
     //Adapter to create message bubbles to add to listview
 
     @Override

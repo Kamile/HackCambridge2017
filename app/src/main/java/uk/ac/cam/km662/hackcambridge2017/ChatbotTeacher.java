@@ -2,11 +2,15 @@ package uk.ac.cam.km662.hackcambridge2017;
 
 import android.app.ListActivity;
 import android.content.Context;
+<<<<<<< HEAD
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.StrictMode;
+=======
+import android.content.SharedPreferences;
+>>>>>>> 5684e5a289d0429f73575f793b6757343cc17159
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,11 +48,19 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+
 public class ChatbotTeacher extends AppCompatActivity {
     
     private String username = "";
     private boolean firstTime;
+<<<<<<< HEAD
     private String currentTopic = "";
+=======
+    private int currentTopic;
+    private int currentDifficulty;
+    private Button sendButton;
+>>>>>>> 5684e5a289d0429f73575f793b6757343cc17159
     private String localToken = "";
     private String conversationId = "";
     private String primaryToken = "";
@@ -92,6 +104,8 @@ public class ChatbotTeacher extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         
+        
+        Score.setUp();
 
         //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         //messagesList.setAdapter(adapter);
@@ -383,10 +397,19 @@ public class ChatbotTeacher extends AppCompatActivity {
         //check for special messages - correct and wrong
         if (botResponse.indexOf("Correct")!=-1) {
           //currentTopic score++;
+<<<<<<< HEAD
           //Score.incrementQuestionScore();
         } else if (botResponse.indexOf("Wrong")!=-1) {
           //score--;
           //Score.decrementQuestionScore();
+=======
+          uk.ac.cam.km662.hackcambridge2017.Score.incrementQuestionScore();
+          Score.incrementTopic(currentTopic,currentDifficulty);
+        } else if (botResponse.indexOf("Wrong")!=-1) {
+          //score--;
+          uk.ac.cam.km662.hackcambridge2017.Score.decrementQuestionScore();
+          Score.decrementTopic(currentTopic,currentDifficulty);
+>>>>>>> 5684e5a289d0429f73575f793b6757343cc17159
         }
         Message message = new Message(botResponse, MessageAdapter.DIRECTION_BOT);
         message.setMessage(botResponse);

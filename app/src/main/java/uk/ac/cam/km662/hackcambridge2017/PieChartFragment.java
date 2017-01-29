@@ -59,9 +59,8 @@ public class PieChartFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.fragment_pie_chart);
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
+        page = getArguments().getInt("1", 0);
+        title = getArguments().getString("Correct vs Incorrect answers");
 
     }
 
@@ -70,7 +69,6 @@ public class PieChartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //pieChart = (PieChart) findViewById(R.id.pie_chart);
         View view = inflater.inflate(R.layout.fragment_pie_chart, container, false);
         pieChart = (PieChart) view.findViewById(R.id.pie_chart);
 

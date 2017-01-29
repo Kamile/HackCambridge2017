@@ -8,10 +8,10 @@ import java.util.ArrayList;
  * Store score of user for analytics
  */
 
-public class Score {
-    private int correctQuestions = 0;
-    private int incorrectQuestions = 0;
-    private ArrayList weeklyProgress;
+public static class Score {
+    private static int correctQuestions = 0;
+    private static int incorrectQuestions = 0;
+    private static ArrayList weeklyProgress;
 
     public int getCorrectQuestions(){
         return correctQuestions;

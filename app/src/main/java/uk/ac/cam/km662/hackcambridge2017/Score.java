@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Score {
     private int correctQuestions = 0;
     private int incorrectQuestions = 0;
+    private int currentSubject = 1;
     private ArrayList weeklyProgress;
     private int topicRange[] = new int[5];
     private int topicScores[] = new int[5];

@@ -9,5 +9,5 @@ package uk.ac.cam.km662.hackcambridge2017;
 
 public class ChartFragment {
 
-    
+
 }

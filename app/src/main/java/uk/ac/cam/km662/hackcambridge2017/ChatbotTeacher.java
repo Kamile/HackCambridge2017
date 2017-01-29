@@ -10,6 +10,7 @@ import android.os.StrictMode;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,6 +103,14 @@ public class ChatbotTeacher extends AppCompatActivity {
         //messagesList.setAdapter(adapter);
       
         welcomeMessage();
+        primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
+        botName = getMetaData(getBaseContext(),"botName").toLowerCase();
+        firstTime = true;
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        runnable.run();
+
 
         //listen for a click on the send button
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -138,15 +147,7 @@ public class ChatbotTeacher extends AppCompatActivity {
 
 
             }
-            
-            primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
-            botName = getMetaData(getBaseContext(),"botName").toLowerCase();
-            firstTime = true;
-            
-            // ATTENTION: This was auto-generated to implement the App Indexing API.
-            // See https://g.co/AppIndexing/AndroidStudio for more information.
-            client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-            runnable.run();
+
         });
 
         smileyButton.setOnClickListener(new View.OnClickListener() {
@@ -188,7 +189,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        String UrlText = "https://learningbuddy.azurewebsites.net/api/conversations";
+        String UrlText = "https://directline.botframework.com/v3/directline/conversations";
         URL url = null;
         String responseValue = "";
 
@@ -233,7 +234,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        String UrlText = "https://learningbuddy.azurewebsites.net/api/conversations"; //+ conversationId + "/activities";
+        String UrlText = "https://directline.botframework.com/v3/directline/conversations" + conversationId + "/activities";
         URL url = null;
 
         try {
@@ -324,7 +325,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        String UrlText = "https://learningbuddy.azurewebsites.net/api/conversations"; //+ conversationId + "/activities";
+        String UrlText = "https://directline.botframework.com/v3/directline/conversations"+ conversationId + "/activities";
         URL url = null;
         String responseValue = "";
 

@@ -8,16 +8,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class PieChartFragment extends Fragment {
@@ -52,6 +59,7 @@ public class PieChartFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.fragment_pie_chart);
         page = getArguments().getInt("someInt", 0);
         title = getArguments().getString("someTitle");
 
@@ -62,16 +70,38 @@ public class PieChartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        pieChart = (PieChart) findViewById(R.id.pie_chart);
+        //pieChart = (PieChart) findViewById(R.id.pie_chart);
         View view = inflater.inflate(R.layout.fragment_pie_chart, container, false);
+        pieChart = (PieChart) view.findViewById(R.id.pie_chart);
+
+        pieChart.setRotationEnabled(true);
+
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                // display msg when value selected
+                if (e == null)
+                    return;
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        // setting sample Data for Pie Chart
+        setDataForPieChart();
         return view;
     }
 
     public void setDataForPieChart() {
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        List<PieEntry> yVals1 = new ArrayList<PieEntry>();
 
         for (int i = 0; i < yValues.length; i++)
-            yVals1.add(new Entry(yValues[i], i));
+            yVals1.add(new PieEntry(yValues[i], i));
 
         ArrayList<String> xVals = new ArrayList<String>();
 
@@ -90,13 +120,10 @@ public class PieChartFragment extends Fragment {
         for (int c : COLOURS)
             colors.add(c);
 
-
         dataSet.setColors(colors);
 
         //  create pie data object and set xValues and yValues and set it to the pieChart
-        PieData data = new PieDataSet(xVals, dataSet);
-        //   data.setValueFormatter(new DefaultValueFormatter());
-        //   data.setValueFormatter(new PercentFormatter());
+        PieData data = new PieData(dataSet);
 
         data.setValueFormatter(new MyValueFormatter());
         data.setValueTextSize(11f);
@@ -116,13 +143,12 @@ public class PieChartFragment extends Fragment {
 
         // Legends to show on bottom of the graph
         Legend l = pieChart.getLegend();
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
         l.setXEntrySpace(7);
         l.setYEntrySpace(5);
     }
 
 
-    public class MyValueFormatter implements ValueFormatter {
+    public class MyValueFormatter implements IValueFormatter {
 
         private DecimalFormat mFormat;
 
@@ -132,10 +158,8 @@ public class PieChartFragment extends Fragment {
 
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            // write your logic here
             return mFormat.format(value) + ""; // e.g. append a dollar-sign
         }
     }
 
-}
 }

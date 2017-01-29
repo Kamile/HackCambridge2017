@@ -54,13 +54,14 @@ public class Score {
 
     public void decrementTopic(int topic, int level) {
         //got wrong
-        int i=topic;
-        while (i<topicRange.length) {
-            if (topicScores[i]-level < 0) {
+        int i = topic;
+        while (i < topicRange.length) {
+            if (topicScores[i] - level < 0) {
                 topicScores[i] = 0;
                 topicRange[i] = 0;
             }
-        decrementQuestionScore();
+            decrementQuestionScore();
+        }
     }
     
     //difficulty 1-3

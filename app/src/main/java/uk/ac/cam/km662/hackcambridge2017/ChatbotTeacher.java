@@ -96,15 +96,6 @@ public class ChatbotTeacher extends AppCompatActivity {
         messageAdapter = new MessageAdapter(this);
         messagesList.setAdapter(messageAdapter);
 
-        primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
-        botName = getMetaData(getBaseContext(),"botName").toLowerCase();
-        firstTime = true;
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        runnable.run();
-        
         //Score.setUp();
 
         //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
@@ -116,9 +107,9 @@ public class ChatbotTeacher extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //collect username during first run
+                  messageBody = messageBodyField.getText().toString();
                   //send whatever message the user types
-                  sendMessage();
+                  sendMessage(messageBody);
 
                   String conversationTokenInfo = startConversation();
                   JSONObject jsonObject = null;
@@ -142,11 +133,20 @@ public class ChatbotTeacher extends AppCompatActivity {
                   }
 
                   if(conversationId != "") {
-                      //sendMessageToBot(messageText);
+                      sendMessageToBot(messageBody);
                   }
 
 
             }
+            
+            primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
+            botName = getMetaData(getBaseContext(),"botName").toLowerCase();
+            firstTime = true;
+            
+            // ATTENTION: This was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
+            client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+            runnable.run();
         });
 
         smileyButton.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +157,21 @@ public class ChatbotTeacher extends AppCompatActivity {
             }
         });
     }
+    
+    // Message sent my user
+    private void sendMessage(String messageBody){
+        if (TextUtils.isEmpty(messageBody)) {
+            Toast.makeText(getApplicationContext(), "Please enter a message", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Message userMessage = new Message(messageBody, MessageAdapter.DIRECTION_USER);
+        messageAdapter.addMessage(userMessage);
+        messageBodyField.setText("");
+        messageBodyField.setHint("Type a message . . . ");
+      
+        sendMessageToBot(messageBody);
+    }
+    
     private void setUsername() {
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -210,20 +225,7 @@ public class ChatbotTeacher extends AppCompatActivity {
       displayMessage(new Message(helloMsg, MessageAdapter.DIRECTION_BOT));
     }
 
-    // Message sent my user
-    private void sendMessage(){
-        messageBody = messageBodyField.getText().toString();
-        if (messageBody.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Please enter a message", Toast.LENGTH_LONG).show();
-            return;
-        }
-        Message userMessage = new Message(messageBody, MessageAdapter.DIRECTION_USER);
-        messageAdapter.addMessage(userMessage);
-        messageBodyField.setText("");
-        messageBodyField.setHint("Type a message . . . ");
-      
-        sendMessageToBot(messageBody);
-    }
+    
   
   //sends the message by making it an activity to the bot
     private void sendMessageToBot(String messageText) {
@@ -269,7 +271,7 @@ public class ChatbotTeacher extends AppCompatActivity {
             else {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 String responseValue = readStream(in);
-                //Log.w("responseSendMsg ",responseValue);
+                Log.w("responseSendMsg ",responseValue);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -346,7 +348,7 @@ public class ChatbotTeacher extends AppCompatActivity {
             else {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 responseValue = readStream(in);
-               // Log.w("responseSendMsg ",responseValue);
+                Log.w("responseSendMsg ",responseValue);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -383,7 +385,7 @@ public class ChatbotTeacher extends AppCompatActivity {
             s.append(buf, 0, n);
         }
 
-        //Log.w("streamValue",s.toString());
+        Log.w("streamValue",s.toString());
         return s.toString();
     }
     
@@ -436,7 +438,7 @@ public class ChatbotTeacher extends AppCompatActivity {
           Thing object = new Thing.Builder()
                   .setName("Chat Page") // TODO: Define a title for the content shown.
                   // TODO: Make sure this auto-generated URL is correct.
-                  .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                  .setUrl(Uri.parse("http://https://learningbuddy.azurewebsites.net/api/conversations"))
                   .build();
           return new Action.Builder(Action.TYPE_VIEW)
                   .setObject(object)

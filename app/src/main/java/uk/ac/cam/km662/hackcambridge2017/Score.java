@@ -38,8 +38,6 @@ public class Score {
         return i;
     }
     
-    public int[] getTopicScores() { return topicScores;}
-    
     public void incrementTopic(int topic, int level) {
         //got correct
         int i=topic;
@@ -47,9 +45,11 @@ public class Score {
             if (topicScores[i]-level < 0) {
                 topicScores[i] = 0;
                 topicRange[i] = 0;
+            } else {
+                adjustRest(topic, level);
             }
-        incrementQuestionScore();
         }
+        incrementQuestionScore();
     }
 
     public void decrementTopic(int topic, int level) {
@@ -59,24 +59,28 @@ public class Score {
             if (topicScores[i] - level < 0) {
                 topicScores[i] = 0;
                 topicRange[i] = 0;
+            } else {
+                adjustRest(topic, level);
             }
-            decrementQuestionScore();
         }
+        decrementQuestionScore();
     }
     
     //difficulty 1-3
     public int getDifficulty() {
-        int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);
-        return 0;
+        int randomNum = ThreadLocalRandom.current().nextInt(1, 3 + 1);
+        return randomNum;
     }
         
     private void adjustRest(int pos, int amt) {
         while (pos < topicRange.length) {
-            pos = topicRange[pos] + amt;
-            pos = topicScores[pos] + amt;
+            topicRange[pos] += amt;
+            topicScores[pos] += amt;
         }
         max += amt;
     }
+    
+    public int[] getTopicScores() { return topicScores;}
 
     public int getCorrectQuestions(){
         return correctQuestions;

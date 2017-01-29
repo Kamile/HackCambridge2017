@@ -2,6 +2,7 @@ package uk.ac.cam.km662.hackcambridge2017;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,11 +27,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
+
 public class ChatbotTeacher extends AppCompatActivity {
     
     private String username = "";
     private boolean firstTime;
-    private String currentTopic = "";
+    private int currentTopic;
+    private int currentDifficulty;
     private Button sendButton;
     private String localToken = "";
     private String conversationId = "";
@@ -72,6 +76,8 @@ public class ChatbotTeacher extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         
+        
+        Score.setUp();
 
         //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         //messagesList.setAdapter(adapter);
@@ -355,9 +361,11 @@ public class ChatbotTeacher extends AppCompatActivity {
         if (botResponse.indexOf("Correct")!=-1) {
           //currentTopic score++;
           uk.ac.cam.km662.hackcambridge2017.Score.incrementQuestionScore();
+          Score.incrementTopic(currentTopic,currentDifficulty);
         } else if (botResponse.indexOf("Wrong")!=-1) {
           //score--;
           uk.ac.cam.km662.hackcambridge2017.Score.decrementQuestionScore();
+          Score.decrementTopic(currentTopic,currentDifficulty);
         }
         Message message = new Message();
         message.direction(0);

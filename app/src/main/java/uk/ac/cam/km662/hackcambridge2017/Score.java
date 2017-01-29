@@ -26,13 +26,14 @@ public class Score {
     public void incrementTopic(int topic, int level) {
         //got correct
     }
-    
+
     public void decrementTopic(int topic, int level) {
-        //got wrong
+
     }
     
     //difficulty 1-3
     public int getDifficulty() {
+
         return 1;
     }
 

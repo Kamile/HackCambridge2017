@@ -36,12 +36,6 @@ public class LineChartFragment extends Fragment {
     private LineChart lineChart;
     private int mFillColor = Color.argb(150, 51, 181, 229);
 
-    //TODO: Use real values
-//    private int[] yValues = {21,26,20,19,24,21,23,29};
-//    private String[] xValues = {"-7", "-6", "-5", "-4", "-3", "-2", "-1", "0"};
-
-
-
     // newInstance constructor for creating fragment with arguments
     public static LineChartFragment newInstance(int page, String title) {
         LineChartFragment fragment = new LineChartFragment();
@@ -66,9 +60,9 @@ public class LineChartFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_line_chart, container, false);
         lineChart = (LineChart) view.findViewById(R.id.line_chart);
+
         lineChart.setBackgroundColor(Color.WHITE);
         lineChart.setGridBackgroundColor(mFillColor);
-        lineChart.setDrawGridBackground(true);
 
         lineChart.setDrawBorders(true);
 
@@ -105,60 +99,11 @@ public class LineChartFragment extends Fragment {
                 Shader.TileMode.REPEAT);
         paint.setShader(linGrad);
 
-        // add data
-        setData(14, 50);
 
         lineChart.invalidate();
         return view;
     }
 
-    private void setData(int count, float range) {
 
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-
-        for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 50;
-            yVals1.add(new Entry(i, val));
-        }
-        LineDataSet set1;
-
-        if (lineChart.getData() != null &&
-                lineChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet)lineChart.getData().getDataSetByIndex(0);
-            set1.setValues(yVals1);
-            lineChart.getData().notifyDataChanged();
-            lineChart.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(yVals1, "DataSet 1");
-
-            set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            set1.setColor(Color.rgb(255, 241, 46));
-            set1.setDrawCircles(false);
-            set1.setLineWidth(2f);
-            set1.setCircleRadius(3f);
-            set1.setFillAlpha(255);
-            set1.setDrawFilled(true);
-            set1.setFillColor(Color.WHITE);
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setDrawCircleHole(false);
-            set1.setFillFormatter(new IFillFormatter() {
-                @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                    return lineChart.getAxisLeft().getAxisMinimum();
-                }
-            });
-
-
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(set1); // add the dataset
-
-            // create a data object with the datasets
-            LineData data = new LineData(dataSets);
-            data.setDrawValues(true);
-
-            // set data
-            //lineChart.setData(data);
-        }
-    }
 }
+

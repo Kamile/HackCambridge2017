@@ -53,13 +53,16 @@ public class ChatbotTeacher extends AppCompatActivity {
     private static final String PREFS_NAME = "Cache";
 
     private String username = "";
-    private boolean firstTime;
+
+
     private int currentTopic;
     private int currentDifficulty;
+
     private String localToken = "";
     private String conversationId = "";
     private String primaryToken = "";
     private String botName = "";
+
     //keep the last Response MsgId, to check if the last response is already printed or not
     private String lastResponseMsgId = "";
     
@@ -71,13 +74,15 @@ public class ChatbotTeacher extends AppCompatActivity {
     private MessageAdapter messageAdapter;
     private Button sendButton;
     private ImageButton smileyButton;
+    private TextView responseValueText;
 
     private View userMessage;
     TextView txtMessage;
 
     ArrayAdapter<String> adapter;
     ArrayList<String> listItems = new ArrayList<String>();
-    
+
+
     Runnable runnable = new Runnable() {
         public void run() {
             pollBotResponses();
@@ -93,29 +98,16 @@ public class ChatbotTeacher extends AppCompatActivity {
         messagesList = (ListView) findViewById(R.id.listMessages);
         sendButton = (Button) findViewById(R.id.sendButton);
         smileyButton = (ImageButton) findViewById(R.id.smileyButton);
-
+        responseValueText = (TextView) findViewById(R.id.response_value);
         messageAdapter = new MessageAdapter(this);
         messagesList.setAdapter(messageAdapter);
-        final String conversationTokenInfo = startConversation();
+
         
         //Score.setUp();
 
-        //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
-        //messagesList.setAdapter(adapter);
-      
         welcomeMessage();
         primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
         botName = getMetaData(getBaseContext(),"botName").toLowerCase();
-        firstTime = true;
-        
-        primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
-        botName = getMetaData(getBaseContext(),"botName").toLowerCase();
-        firstTime = true;
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        runnable.run();
 
         //listen for a click on the send button
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +125,8 @@ public class ChatbotTeacher extends AppCompatActivity {
                 
                System.err.println("Received message "+userMessage);
 
+                  startConversation();
+                  String conversationTokenInfo = responseValueText.getText().toString();
                   JSONObject jsonObject = null;
 
                   if(conversationTokenInfo != "") {
@@ -146,7 +140,7 @@ public class ChatbotTeacher extends AppCompatActivity {
                   //send message to bot and get the response using the api conversations/{conversationid}/activities
                   if(jsonObject != null) {
                       try {
-                           System.err.println("Getting conversation ID");
+                          System.err.println("Getting conversation ID");
                           conversationId = jsonObject.get("conversationId").toString();
                           localToken = jsonObject.get("token").toString();
                           System.err.println("conversation ID is "+conversationId);
@@ -156,12 +150,20 @@ public class ChatbotTeacher extends AppCompatActivity {
                   }
 
                   if(conversationId != "") {
-                      sendMessageToBot(userMessage.getMessage());
                       System.err.println("Going to send to bot");
                       sendMessageToBot(userMessage.getMessage());
                   }
             }
         });
+
+        primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
+        botName = getMetaData(getBaseContext(),"botName").toLowerCase();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        System.err.println("are we ever near runnable??");
+        runnable.run();
 
         smileyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +172,8 @@ public class ChatbotTeacher extends AppCompatActivity {
                 ChatbotTeacher.this.startActivity(intent);
             }
         });
+
+
     }
     
     private void setUsername() {
@@ -182,43 +186,45 @@ public class ChatbotTeacher extends AppCompatActivity {
     }
   
   //returns the conversationID
-    private String startConversation()
+    private void startConversation()
     {
-        //NEED TO CHANGE: network work should be done over an asyns task
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        //NEED TO CHANGE: network work should be done over an async task
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
 
-        String UrlText = "https://directline.botframework.com/v3/directline/conversations";
-        URL url = null;
-        String responseValue = "";
+        String UrlText = "https://directline.botframework.com/api/conversations";
 
-        try {
-            url = new URL(UrlText);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        HttpURLConnection urlConnection = null;
-        try {
-            String basicAuth = "Bearer "  + primaryToken;
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("Authorization", basicAuth);
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            responseValue = readStream(in);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-            urlConnection.disconnect();
-        }
+        new ConnectionToServer(responseValueText).execute(UrlText, primaryToken);
 
-        return  responseValue;
+//        try {
+//            url = new URL(UrlText);
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
+//        HttpURLConnection urlConnection = null;
+//        try {
+//            String basicAuth = "Bearer "  + primaryToken;
+//            urlConnection = (HttpURLConnection) url.openConnection();
+//            urlConnection.setRequestProperty("Authorization", basicAuth);
+//            urlConnection.setRequestMethod("POST");
+//            urlConnection.setRequestProperty("Content-Type", "application/json");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+//            responseValue = readStream(in);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        finally {
+//            urlConnection.disconnect();
+//        }
+//
+//        return responseValue;
     }
+
+
     private void welcomeMessage() {
       String helloMsg = "Hello! Welcome to your Octocat - your one stop app for the pursuit of knowledge. How may I address you?";
       Message welcome = new Message(helloMsg,1);
@@ -230,70 +236,80 @@ public class ChatbotTeacher extends AppCompatActivity {
   //sends the message by making it an activity to the bot
     private void sendMessageToBot(String messageText) {
         System.err.println("Inside sendMessagetoBot function");
-        //Only for demo sake, otherwise the network work should be done over an asyns task
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
 
-        String UrlText = "https://directline.botframework.com/v3/directline/conversations" + conversationId + "/activities";
+
+        //Only for demo sake, otherwise the network work should be done over an asyns task
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
+
+        String UrlText = "https://directline.botframework.com/v3/directline/conversations/"+ conversationId + "/activities";
 
         URL url = null;
 
-        try {
-            url = new URL(UrlText);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        HttpURLConnection urlConnection = null;
-        try {
-            String basicAuth = "Bearer " + localToken;
+        new SendToBotAsync().execute(UrlText, localToken, messageText);
 
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("type","message");
-                jsonObject.put("text",messageText);
-                jsonObject.put("from",(new JSONObject().put("id","user1")));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            String postData = jsonObject.toString();
-            System.err.println("Going to set up url connection to "+postData);
-
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("Authorization", basicAuth);
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("Content-Length", "" + postData.getBytes().length);
-            OutputStream out = urlConnection.getOutputStream();
-            out.write(postData.getBytes());
-
-            int responseCode = urlConnection.getResponseCode(); //can call this instead of con.connect()
-            if (responseCode >= 400 && responseCode <= 499) {
-                throw new Exception("Bad authentication status: " + responseCode); //provide a more meaningful exception message
-            }
-            else {
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                String responseValue = readStream(in);
-                Log.w("responseSendMsg ",responseValue);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-            urlConnection.disconnect();
-        }
+//        try {
+//            url = new URL(UrlText);
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
+//        HttpURLConnection urlConnection = null;
+//        try {
+//            String basicAuth = "Bearer " + localToken;
+//
+//            JSONObject jsonObject = new JSONObject();
+//            try {
+//                jsonObject.put("type","message");
+//                jsonObject.put("text",messageText);
+//                jsonObject.put("from",(new JSONObject().put("id","user1")));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            String postData = jsonObject.toString();
+//            System.err.println("Going to set up url connection to "+postData);
+//
+//            urlConnection = (HttpURLConnection) url.openConnection();
+//            urlConnection.setRequestProperty("Authorization", basicAuth);
+//            urlConnection.setRequestMethod("POST");
+//            urlConnection.setRequestProperty("Content-Type", "application/json");
+//            urlConnection.setRequestProperty("Content-Length", "" + postData.getBytes().length);
+//            OutputStream out = urlConnection.getOutputStream();
+//            out.write(postData.getBytes());
+//
+//            System.err.println("URL Connection");
+//
+//            int responseCode = urlConnection.getResponseCode(); //can call this instead of con.connect()
+//            System.err.println("Response code " + responseCode);
+//            if (responseCode >= 400 && responseCode <= 499) {
+//                throw new Exception("Bad authentication status: " + responseCode); //provide a more meaningful exception message
+//            }
+//            else {
+//                System.err.println("Else condition");
+//                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+//                String responseValue = readStream(in);
+//                Log.w("responseSendMsg ",responseValue);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        finally {
+//            urlConnection.disconnect();
+//        }
 
     }
     
     public void pollBotResponses()
     {
+        System.err.println("Polling bot responses");
         String botResponse = "";
         if(conversationId != "" && localToken != "") {
             botResponse = getBotResponse();
             if (botResponse != "") {
+                System.err.println("Bot response is " + botResponse);
                 try {
                     JSONObject jsonObject = new JSONObject(botResponse);
                     String responseMsg = "";
@@ -322,8 +338,9 @@ public class ChatbotTeacher extends AppCompatActivity {
     }
   
   //Get the bot response by polling a GET to directline API
-    private String getBotResponse() {
+    private String getBotResponse () {
         //Only for demo sake, otherwise the network work should be done over an asyns task
+        System.err.println("In getBotResponse");
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -340,6 +357,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         }
         HttpURLConnection urlConnection = null;
         try {
+            System.err.println("Got the well formed Url");
             String basicAuth = "Bearer " + localToken;
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("Authorization", basicAuth);
@@ -357,8 +375,7 @@ public class ChatbotTeacher extends AppCompatActivity {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         finally {
@@ -443,7 +460,7 @@ public class ChatbotTeacher extends AppCompatActivity {
           Thing object = new Thing.Builder()
                   .setName("Chat Page") // TODO: Define a title for the content shown.
                   // TODO: Make sure this auto-generated URL is correct.
-                  .setUrl(Uri.parse("https://directline.botframework.com/v3/directline/conversations"))
+                  .setUrl(Uri.parse("https://directline.botframework.com/v3/directline/conversations"+ conversationId + "/activities"))
                   .build();
           return new Action.Builder(Action.TYPE_VIEW)
                   .setObject(object)

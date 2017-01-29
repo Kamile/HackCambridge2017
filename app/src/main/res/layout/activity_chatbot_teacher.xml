@@ -11,8 +11,12 @@
     android:background="@drawable/gradient_background"
     tools:context="uk.ac.cam.km662.hackcambridge2017.ChatbotTeacher">
 
-    <!-- Smiley button to get to Analytics -->
+    <TextView
+        android:id="@+id/response_value"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
 
+    <!-- Smiley button to get to Analytics -->
     <ImageButton
         android:id="@+id/smileyButton"
         android:layout_margin="5dp"

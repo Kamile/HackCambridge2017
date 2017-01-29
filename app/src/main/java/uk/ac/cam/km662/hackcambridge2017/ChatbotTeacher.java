@@ -186,7 +186,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        String UrlText = "https://directline.botframework.com/v3/directline/conversations";
+        String UrlText = "https://directline.botframework.com/api/conversations/";
         URL url = null;
         String responseValue = "";
 
@@ -232,7 +232,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        String UrlText = "https://directline.botframework.com/v3/directline/conversations/"+ conversationId + "/activities";
+        String UrlText = "https://directline.botframework.com/api/conversations/"+ conversationId + "/activities";
         URL url = null;
 
         try {
@@ -438,7 +438,7 @@ public class ChatbotTeacher extends AppCompatActivity {
           Thing object = new Thing.Builder()
                   .setName("Chat Page") // TODO: Define a title for the content shown.
                   // TODO: Make sure this auto-generated URL is correct.
-                  .setUrl(Uri.parse("http://https://learningbuddy.azurewebsites.net/api/conversations"))
+                  .setUrl(Uri.parse("https://directline.botframework.com/api/conversations/"))
                   .build();
           return new Action.Builder(Action.TYPE_VIEW)
                   .setObject(object)

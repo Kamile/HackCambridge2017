@@ -27,7 +27,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ChatbotTeacher extends AppCompatActivity {
-  
+    
+    private String username = "";
+    private boolean firstTime;
+    private String currentTopic = "";
     private Button sendButton;
     private String localToken = "";
     private String conversationId = "";
@@ -63,6 +66,7 @@ public class ChatbotTeacher extends AppCompatActivity {
 
         primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
         botName = getMetaData(getBaseContext(),"botName").toLowerCase();
+        firstTime = true;
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -78,36 +82,48 @@ public class ChatbotTeacher extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendMessage();
-                pollBotResponses();
+              //collect username during first run
+                if (firstTime) {
+                  setUsername();
+                } else {
+                  //send whatever message the user types
+                  sendMessage();
+                  pollBotResponses();
 
-                String conversationTokenInfo = startConversation();
-                JSONObject jsonObject = null;
+                  String conversationTokenInfo = startConversation();
+                  JSONObject jsonObject = null;
 
-                if(conversationTokenInfo != "") {
-                    try {
-                        jsonObject = new JSONObject(conversationTokenInfo);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+                  if(conversationTokenInfo != "") {
+                      try {
+                          jsonObject = new JSONObject(conversationTokenInfo);
+                      } catch (JSONException e) {
+                          e.printStackTrace();
+                      }
+                  }
 
-                //send message to bot and get the response using the api conversations/{conversationid}/activities
-                if(jsonObject != null) {
-                    try {
-                        conversationId = jsonObject.get("conversationId").toString();
-                        localToken = jsonObject.get("token").toString();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+                  //send message to bot and get the response using the api conversations/{conversationid}/activities
+                  if(jsonObject != null) {
+                      try {
+                          conversationId = jsonObject.get("conversationId").toString();
+                          localToken = jsonObject.get("token").toString();
+                      } catch (JSONException e) {
+                          e.printStackTrace();
+                      }
+                  }
 
-                if(conversationId != "") {
-                    sendMessageToBot(messageText);
+                  if(conversationId != "") {
+                      sendMessageToBot(messageText);
+                  }
                 }
 
             }
         });
+    }
+    private void setUsername(String username) {
+       username = messageBodyField.getText().toString();
+        if (username.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Please enter your name", Toast.LENGTH_LONG).show();
+        } else {firstTime=false;}
     }
   
   //returns the conversationID
@@ -148,11 +164,11 @@ public class ChatbotTeacher extends AppCompatActivity {
 
         return  responseValue;
     }
-  private void welcomeMessage() {
-    String helloMsg = "Hello! Welcome to your Octocat. Are you ready to start your pursuit of knowledge?";
-    Message welcome = new Message(helloMsg,1);
-    displayMessage(helloMsg);
-  }
+    private void welcomeMessage() {
+      String helloMsg = "Hello! Welcome to your Octocat - your one stop app for the pursuit of knowledge. How may I address you?";
+      Message welcome = new Message(helloMsg,1);
+      displayMessage(helloMsg);
+    }
 
     private void sendMessage(){
         messageBody = messageBodyField.getText().toString();
@@ -165,7 +181,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         messageBodyField.setText("");
         messageBodyField.setHint("Type a message . . . ");
       
-      sendMessageToBot(messageBody);
+        sendMessageToBot(messageBody);
     }
   
   //sends the message by making it an activity to the bot
@@ -289,7 +305,7 @@ public class ChatbotTeacher extends AppCompatActivity {
             else {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 responseValue = readStream(in);
-                Log.w("responseSendMsg ",responseValue);
+               // Log.w("responseSendMsg ",responseValue);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -331,12 +347,19 @@ public class ChatbotTeacher extends AppCompatActivity {
     }
     
     /*
-    Add the bot response to chat window
+    Add the bot response to chat window & check for special messages
      */
     private void AddResponseToChat(String botResponse)
-    {
+    {   
+        //check for special messages - correct and wrong
+        if (botResponse.indexOf("Correct")!=-1) {
+          //currentTopic score++;
+          uk.ac.cam.km662.hackcambridge2017.Score.incrementQuestionScore();
+        } else if (botResponse.indexOf("Wrong")!=-1) {
+          //score--;
+          uk.ac.cam.km662.hackcambridge2017.Score.decrementQuestionScore();
+        }
         Message message = new Message();
-        //message.setId(2);
         message.direction(0);
         message.setMessage(botResponse);
         displayMessage(message);
@@ -361,7 +384,8 @@ public class ChatbotTeacher extends AppCompatActivity {
         }
         return null;
     }
-  
+    
+    //i have no idea
     public Action getIndexApiAction() {
           Thing object = new Thing.Builder()
                   .setName("Chat Page") // TODO: Define a title for the content shown.

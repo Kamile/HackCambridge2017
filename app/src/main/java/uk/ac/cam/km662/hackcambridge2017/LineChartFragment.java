@@ -2,6 +2,9 @@ package uk.ac.cam.km662.hackcambridge2017;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -92,6 +95,16 @@ public class LineChartFragment extends Fragment {
 
         lineChart.getAxisRight().setEnabled(false);
 
+        // Get the paint renderer to create the line shading.
+        Paint paint = lineChart.getRenderer().getPaintRender();
+        int height = lineChart.getHeight();
+
+        LinearGradient linGrad = new LinearGradient(0, 0, 0, height,
+                getResources().getColor(R.color.lineGraphHigh),
+                getResources().getColor(R.color.lineGraphLow),
+                Shader.TileMode.REPEAT);
+        paint.setShader(linGrad);
+
         // add data
         setData(14, 50);
 
@@ -145,7 +158,7 @@ public class LineChartFragment extends Fragment {
             data.setDrawValues(true);
 
             // set data
-            lineChart.setData(data);
+            //lineChart.setData(data);
         }
     }
 }

@@ -11,4 +11,8 @@
 
     <color name="light_grey">#D3D3D3</color>
     <color name="silver">#E6E8FA</color>
+
+    <color name="lineGraphHigh">#009900</color>
+    <color name="lineGraphLow">#cceacc</color>
+
 </resources>

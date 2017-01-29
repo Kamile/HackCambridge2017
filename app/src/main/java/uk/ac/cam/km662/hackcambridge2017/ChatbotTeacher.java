@@ -186,7 +186,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        String UrlText = "https://learningbuddy.azurewebsites.net/api/conversations";
+        String UrlText = "https://directline.botframework.com/v3/directline/conversations";
         URL url = null;
         String responseValue = "";
 
@@ -232,7 +232,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        String UrlText = "https://learningbuddy.azurewebsites.net/api/conversations"; //+ conversationId + "/activities";
+        String UrlText = "https://directline.botframework.com/v3/directline/conversations/"+ conversationId + "/activities";
         URL url = null;
 
         try {
@@ -324,7 +324,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        String UrlText = "https://learningbuddy.azurewebsites.net/api/conversations"; //+ conversationId + "/activities";
+        String UrlText = "https://directline.botframework.com/v3/directline/conversations/"+ conversationId + "/activities";
         URL url = null;
         String responseValue = "";
 

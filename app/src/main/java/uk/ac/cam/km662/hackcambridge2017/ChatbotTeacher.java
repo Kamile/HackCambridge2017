@@ -95,23 +95,39 @@ public class ChatbotTeacher extends AppCompatActivity {
 
         messageAdapter = new MessageAdapter(this);
         messagesList.setAdapter(messageAdapter);
-
+        String conversationTokenInfo = startConversation();
+        
         //Score.setUp();
 
         //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         //messagesList.setAdapter(adapter);
       
         welcomeMessage();
+        
+        primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
+        botName = getMetaData(getBaseContext(),"botName").toLowerCase();
+        firstTime = true;
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        runnable.run();
 
         //listen for a click on the send button
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                  messageBody = messageBodyField.getText().toString();
-                  //send whatever message the user types
-                  sendMessage(messageBody);
+                messageBody = messageBodyField.getText().toString();
+                if (TextUtils.isEmpty(messageBody)) {
+                    Toast.makeText(getApplicationContext(), "Please enter a message", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Message userMessage = new Message(messageBody, MessageAdapter.DIRECTION_USER);
+                messageAdapter.addMessage(userMessage);
+                messageBodyField.setText("");
+                messageBodyField.setHint("Type a message . . . ");
+                  
 
-                  String conversationTokenInfo = startConversation();
                   JSONObject jsonObject = null;
 
                   if(conversationTokenInfo != "") {
@@ -133,20 +149,12 @@ public class ChatbotTeacher extends AppCompatActivity {
                   }
 
                   if(conversationId != "") {
-                      sendMessageToBot(messageBody);
+                      sendMessageToBot(userMessage);
                   }
 
 
             }
             
-            primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
-            botName = getMetaData(getBaseContext(),"botName").toLowerCase();
-            firstTime = true;
-            
-            // ATTENTION: This was auto-generated to implement the App Indexing API.
-            // See https://g.co/AppIndexing/AndroidStudio for more information.
-            client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-            runnable.run();
         });
 
         smileyButton.setOnClickListener(new View.OnClickListener() {
@@ -156,20 +164,6 @@ public class ChatbotTeacher extends AppCompatActivity {
                 ChatbotTeacher.this.startActivity(intent);
             }
         });
-    }
-    
-    // Message sent my user
-    private void sendMessage(String messageBody){
-        if (TextUtils.isEmpty(messageBody)) {
-            Toast.makeText(getApplicationContext(), "Please enter a message", Toast.LENGTH_LONG).show();
-            return;
-        }
-        Message userMessage = new Message(messageBody, MessageAdapter.DIRECTION_USER);
-        messageAdapter.addMessage(userMessage);
-        messageBodyField.setText("");
-        messageBodyField.setHint("Type a message . . . ");
-      
-        sendMessageToBot(messageBody);
     }
     
     private void setUsername() {

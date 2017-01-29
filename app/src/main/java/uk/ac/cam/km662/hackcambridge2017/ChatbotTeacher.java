@@ -76,6 +76,12 @@ public class ChatbotTeacher extends AppCompatActivity {
 
     ArrayAdapter<String> adapter;
     ArrayList<String> listItems = new ArrayList<String>();
+    
+    Runnable runnable = new Runnable() {
+        public void run() {
+            pollBotResponses();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +103,7 @@ public class ChatbotTeacher extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        
+        runnable.run();
         
         //Score.setUp();
 
@@ -113,7 +119,6 @@ public class ChatbotTeacher extends AppCompatActivity {
               //collect username during first run
                   //send whatever message the user types
                   sendMessage();
-                  pollBotResponses();
 
                   String conversationTokenInfo = startConversation();
                   JSONObject jsonObject = null;

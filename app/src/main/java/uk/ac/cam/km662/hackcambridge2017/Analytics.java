@@ -2,6 +2,9 @@ package uk.ac.cam.km662.hackcambridge2017;
 
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -24,6 +28,8 @@ public class Analytics extends AppCompatActivity {
     private ImageButton leftNavigate;
     private ImageButton rightNavigate;
 
+    private FragmentPagerAdapter viewPagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +37,12 @@ public class Analytics extends AppCompatActivity {
 
         userProfilePic = (ImageView) findViewById(R.id.user_profile_pic);
         analyticsGreeting = (TextView) findViewById(R.id.analytics_title);
+
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+
         leftNavigate = (ImageButton) findViewById(R.id.left_nav);
         rightNavigate = (ImageButton) findViewById(R.id.right_nav);
 
@@ -72,8 +83,60 @@ public class Analytics extends AppCompatActivity {
             }
         });
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                //When graph scrolled
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Toast.makeText(Analytics.this,
+                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 
     }
+
+    public static class ViewPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_PAGES = 2;
+
+        public ViewPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_PAGES; // total number of pages
+        }
+
+        //Return fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+                    return LineChartFragment.newInstance(0, "Total correct answers over time");
+                case 1:
+                    return PieChartFragment.newInstance(1, "Correct vs incorrect answers");
+                default:
+                    return null;
+            }
+        }
+
+        //Return page title
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + position;
+        }
+
+    }
+
 
 
 }

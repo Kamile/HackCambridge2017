@@ -71,6 +71,8 @@ public class ChatbotTeacher extends AppCompatActivity {
 
         //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         //messagesList.setAdapter(adapter);
+      
+        welcomeMessage();
 
         //listen for a click on the send button
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +148,11 @@ public class ChatbotTeacher extends AppCompatActivity {
 
         return  responseValue;
     }
+  private void welcomeMessage() {
+    String helloMsg = "Hello! Welcome to your Octocat. Are you ready to start your pursuit of knowledge?";
+    Message welcome = new Message(helloMsg,1);
+    displayMessage(helloMsg);
+  }
 
     private void sendMessage(){
         messageBody = messageBodyField.getText().toString();

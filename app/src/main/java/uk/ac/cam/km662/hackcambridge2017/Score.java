@@ -12,6 +12,29 @@ public class Score {
     private int correctQuestions = 0;
     private int incorrectQuestions = 0;
     private ArrayList weeklyProgress;
+    private int[] topics = new int[5];
+    
+    //topic 1-2, 3-5
+    public void setUp() {
+        topics = new int[5];
+    }
+    
+    public int getTopic() {
+        return 1;
+    }
+    
+    public void incrementTopic(int topic, int level) {
+        //got correct
+    }
+    
+    public void decrementTopic(int topic, int level) {
+        //got wrong
+    }
+    
+    //difficulty 1-3
+    public int getDifficulty() {
+        return 1;
+    }
 
     public int getCorrectQuestions(){
         return correctQuestions;

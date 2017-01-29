@@ -130,7 +130,8 @@ public class ChatbotTeacher extends AppCompatActivity {
                 messageAdapter.addMessage(userMessage);
                 messageBodyField.setText("");
                 messageBodyField.setHint("Type a message . . . ");
-                  
+                
+               System.err.println("Received message "+userMessage);
 
                   JSONObject jsonObject = null;
 
@@ -145,8 +146,10 @@ public class ChatbotTeacher extends AppCompatActivity {
                   //send message to bot and get the response using the api conversations/{conversationid}/activities
                   if(jsonObject != null) {
                       try {
+                           System.err.println("Getting conversation ID");
                           conversationId = jsonObject.get("conversationId").toString();
                           localToken = jsonObject.get("token").toString();
+                          System.err.println("conversation ID is "+conversationId);
                       } catch (JSONException e) {
                           e.printStackTrace();
                       }
@@ -154,9 +157,9 @@ public class ChatbotTeacher extends AppCompatActivity {
 
                   if(conversationId != "") {
                       sendMessageToBot(userMessage.getMessage());
+                      System.err.println("Going to send to bot");
+                      sendMessageToBot(userMessage.getMessage());
                   }
-
-
             }
         });
 
@@ -226,6 +229,7 @@ public class ChatbotTeacher extends AppCompatActivity {
   
   //sends the message by making it an activity to the bot
     private void sendMessageToBot(String messageText) {
+        System.err.println("Inside sendMessagetoBot function");
         //Only for demo sake, otherwise the network work should be done over an asyns task
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -252,6 +256,7 @@ public class ChatbotTeacher extends AppCompatActivity {
             }
 
             String postData = jsonObject.toString();
+            System.err.println("Going to set up url connection to "+postData);
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("Authorization", basicAuth);
@@ -435,7 +440,7 @@ public class ChatbotTeacher extends AppCompatActivity {
           Thing object = new Thing.Builder()
                   .setName("Chat Page") // TODO: Define a title for the content shown.
                   // TODO: Make sure this auto-generated URL is correct.
-                  .setUrl(Uri.parse("http://https://learningbuddy.azurewebsites.net/api/conversations"))
+                  .setUrl(Uri.parse("https://directline.botframework.com/v3/directline/conversations"))
                   .build();
           return new Action.Builder(Action.TYPE_VIEW)
                   .setObject(object)

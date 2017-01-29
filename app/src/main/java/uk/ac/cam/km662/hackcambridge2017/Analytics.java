@@ -91,8 +91,6 @@ public class Analytics extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(Analytics.this,
-                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
             }
 
             @Override

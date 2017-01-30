@@ -1,6 +1,7 @@
 package uk.ac.cam.km662.hackcambridge2017;
 
 import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,12 @@ public class MessageAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
     private ArrayList<Message> messages;
+    private Activity context;
 
-    public MessageAdapter(Activity activity) {
-        layoutInflater = activity.getLayoutInflater();
-        messages = new ArrayList<Message>();
+    public MessageAdapter(Activity context, ArrayList<Message> messages) {
+        this.context = context;
+        this.messages = messages;
+        layoutInflater = context.getLayoutInflater();
     }
 
     public void addMessage(Message message) {
@@ -34,12 +37,21 @@ public class MessageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return messages.size();
+        if (messages != null) {
+            return messages.size();
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public Object getItem(int i) {
-        return messages.get(i).getMessage();
+        if (messages != null) {
+            return messages.get(i).getMessage();
+        } else {
+            return null;
+        }
+
     }
 
     @Override
@@ -54,9 +66,13 @@ public class MessageAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int i) {
-        return messages.get(i).getDirection();
+        boolean directionIsUser = messages.get(i).getIsUser();
+        if (directionIsUser){
+            return 1;
+        } else {
+            return 0;
+        }
     }
-
 
     @Override
     public boolean isEnabled(int position) {
@@ -64,13 +80,14 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     //Adapter to create message bubbles to add to listview
-
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(final int i, View convertView, ViewGroup parent) {
+        RecyclerView.ViewHolder holder;
+
         int direction = getItemViewType(i);
 
-        //show message on left or right, depending on if
-        //it's incoming or outgoing
+        // show message on left or right, depending on if
+        // it's incoming or outgoing
         if (convertView == null) {
             int res = 0;
             if (direction == DIRECTION_BOT) {
@@ -78,7 +95,7 @@ public class MessageAdapter extends BaseAdapter {
             } else if (direction == DIRECTION_USER) {
                 res = R.layout.user_message;
             }
-            convertView = layoutInflater.inflate(res, viewGroup, false);
+            convertView = layoutInflater.inflate(res, parent, false);
         }
 
         String message = messages.get(i).getMessage();

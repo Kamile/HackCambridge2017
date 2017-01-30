@@ -21,6 +21,6 @@ public class LoadPage extends AppCompatActivity {
                 LoadPage.this.startActivity(intent);
                 LoadPage.this.finish();
             }
-        }, 3000);
+        }, 2000);
     }
 }

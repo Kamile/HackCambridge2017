@@ -77,17 +77,24 @@ public class LineChartFragment extends Fragment {
 
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setAxisMaximum(0);
-        xAxis.setAxisMinimum(-7);
+        xAxis.setAxisMinimum(5);
         xAxis.setEnabled(true);
 
         YAxis leftAxis = lineChart.getAxisLeft();
-        leftAxis.setAxisMaximum(100);
+        leftAxis.setAxisMaximum(50);
         leftAxis.setAxisMinimum(0);
         leftAxis.setDrawAxisLine(false);
         leftAxis.setDrawZeroLine(false);
         leftAxis.setDrawGridLines(false);
 
         lineChart.getAxisRight().setEnabled(false);
+
+        List<Entry> entries = new ArrayList<Entry>();
+        entries.add(new Entry(0,30));
+        entries.add(new Entry(1, 27));
+        entries.add(new Entry(2, 20));
+        entries.add(new Entry(3, 35));
+        entries.add(new Entry(4, 47));
 
         // Get the paint renderer to create the line shading.
         Paint paint = lineChart.getRenderer().getPaintRender();
@@ -98,6 +105,26 @@ public class LineChartFragment extends Fragment {
                 getResources().getColor(R.color.lineGraphLow),
                 Shader.TileMode.REPEAT);
         paint.setShader(linGrad);
+
+        // limit lines are drawn behind data (and not on top)
+        leftAxis.setDrawLimitLinesBehindData(true);
+
+        lineChart.getAxisRight().setEnabled(false);
+
+
+        LineDataSet dataset = new LineDataSet(entries, "day");
+        //LineData data = new LineData(dataset);
+        //lineChart.setData(data); // set the data and list of lables into chart
+        //dataset.setDrawFilled(true); // to fill the below area of line in graph
+
+
+        //lineChart.animateX(2500);
+
+        // get the legend (only possible after setting data)
+        l = lineChart.getLegend();
+
+        // modify the legend ...
+        l.setForm(Legend.LegendForm.LINE);
 
 
         lineChart.invalidate();

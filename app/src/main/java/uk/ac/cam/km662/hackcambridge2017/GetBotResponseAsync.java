@@ -1,21 +1,12 @@
 package uk.ac.cam.km662.hackcambridge2017;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,16 +18,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Created by kamile on 29/01/2017.
+ * Created by kamile on 30/01/2017.
  */
 
-/**
- * Implementation of AsyncTask designed to fetch data from the network.
- */
-public class SendToBotAsync extends AsyncTask<String, String, String>
-{
+public class GetBotResponseAsync extends AsyncTask<String, String, String> {
+
     URL url;
-
     //read the chat bot response
     private String readStream(InputStream in) {
         char[] buf = new char[2048];
@@ -72,6 +59,7 @@ public class SendToBotAsync extends AsyncTask<String, String, String>
 
     @Override
     protected String doInBackground(String... args) {
+        String responseValue = "";
         try {
             url = new URL(args[0]);
         } catch (MalformedURLException e) {
@@ -79,55 +67,36 @@ public class SendToBotAsync extends AsyncTask<String, String, String>
         }
         HttpURLConnection urlConnection = null;
         try {
+            System.err.println("Got the well formed Url");
             String basicAuth = "Bearer " + args[1];
-
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("type","message");
-                jsonObject.put("text", args[2]);
-                jsonObject.put("from",(new JSONObject().put("id","user1")));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            String postData = jsonObject.toString();
-            System.err.println("Going to set up url connection to "+postData);
-
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("Authorization", basicAuth);
-            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("Content-Length", "" + postData.getBytes().length);
-            OutputStream out = urlConnection.getOutputStream();
-            out.write(postData.getBytes());
-
-            System.err.println("URL Connection");
 
             int responseCode = urlConnection.getResponseCode(); //can call this instead of con.connect()
-            System.err.println("Response code " + responseCode);
             if (responseCode >= 400 && responseCode <= 499) {
                 throw new Exception("Bad authentication status: " + responseCode); //provide a more meaningful exception message
             }
             else {
-                System.err.println("Else condition");
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                String responseValue = readStream(in);
-                Log.w("responseSendMsg ",responseValue);
+                responseValue = readStream(in);
+                Log.w("responseMsg ",responseValue);
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         finally {
             urlConnection.disconnect();
         }
-        return "";
+
+        return responseValue;
     }
+
     @Override
     protected void onPostExecute(String args) {
 
     }
 }
-

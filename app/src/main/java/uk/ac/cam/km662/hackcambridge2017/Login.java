@@ -219,7 +219,6 @@ public class Login extends FragmentActivity implements GoogleApiClient.OnConnect
             mProgressDialog.setMessage(getString(R.string.loading));
             mProgressDialog.setIndeterminate(true);
         }
-
         mProgressDialog.show();
     }
 
@@ -238,7 +237,13 @@ public class Login extends FragmentActivity implements GoogleApiClient.OnConnect
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("username", PERSON_NAME);
-        editor.putString("profilePicture", PERSON_PHOTO.toString());
+
+        if (PERSON_PHOTO != null){
+            editor.putString("profilePicture", PERSON_PHOTO.toString());
+        } else {
+            editor.putString("profilePicture",
+                    "https://www.google.co.uk/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwjW8P3InObRAhWB7hoKHUcmAUkQjRwIBw&url=http%3A%2F%2Fwww.visualsays.com%2Fcat-pictures%2F&psig=AFQjCNFYlAWBYnAQEm2Ka3T0kkIzxHpN3g&ust=1485740424989722");
+        }
 
         // Commit the edits
         editor.apply();

@@ -1,6 +1,5 @@
 package uk.ac.cam.km662.hackcambridge2017;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -13,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,10 +35,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static android.R.id.list;
-import static android.R.id.message;
-import static java.security.AccessController.getContext;
-
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -48,7 +42,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 
 public class ChatbotTeacher extends AppCompatActivity {
@@ -80,9 +73,6 @@ public class ChatbotTeacher extends AppCompatActivity {
     private ImageButton smileyButton;
     private TextView responseValueText;
 
-
-    ArrayAdapter<String> adapter;
-    ArrayList<String> listItems = new ArrayList<String>();
 
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
@@ -316,7 +306,7 @@ public class ChatbotTeacher extends AppCompatActivity {
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("Content-Type", "application/json");
 
-            int responseCode = urlConnection.getResponseCode(); //can call this instead of con.connect()
+            int responseCode = urlConnection.getResponseCode();
             if (responseCode >= 400 && responseCode <= 499) {
                 throw new Exception("Bad authentication status: " + responseCode); //provide a more meaningful exception message
             }
@@ -333,7 +323,6 @@ public class ChatbotTeacher extends AppCompatActivity {
         finally {
             urlConnection.disconnect();
         }
-
         return responseValue;
     }
   
@@ -391,7 +380,7 @@ public class ChatbotTeacher extends AppCompatActivity {
                 }
             }
         }
-        handler.postDelayed(runnable, 1000*5);
+        handler.postDelayed(runnable, 1000*2);
     }
 
     
@@ -443,8 +432,7 @@ public class ChatbotTeacher extends AppCompatActivity {
 
     public Action getIndexApiAction() {
           Thing object = new Thing.Builder()
-                  .setName("Chat Page") // TODO: Define a title for the content shown.
-                  // TODO: Make sure this auto-generated URL is correct.
+                  .setName("Chat Page")
                   .setUrl(Uri.parse("https://directline.botframework.com/v3/directline/conversations/"+ conversationId + "/activities"))
                   .build();
           return new Action.Builder(Action.TYPE_VIEW)
@@ -456,9 +444,6 @@ public class ChatbotTeacher extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
         AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
@@ -466,9 +451,6 @@ public class ChatbotTeacher extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }

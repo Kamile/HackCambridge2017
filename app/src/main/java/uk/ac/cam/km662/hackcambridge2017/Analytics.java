@@ -119,7 +119,7 @@ public class Analytics extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return PieChartFragment.newInstance(0, "Total correct answers over time");
+                    return LineChartFragment.newInstance(0, "Total correct answers over time");
                 case 1:
                     return PieChartFragment.newInstance(1, "Correct vs incorrect answers");
                 default:

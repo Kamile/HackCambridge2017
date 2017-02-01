@@ -118,7 +118,7 @@ public class LineChartFragment extends Fragment {
         //dataset.setDrawFilled(true); // to fill the below area of line in graph
 
 
-        //lineChart.animateX(2500);
+        lineChart.animateX(2500);
 
         // get the legend (only possible after setting data)
         l = lineChart.getLegend();

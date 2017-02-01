@@ -94,17 +94,15 @@ public class ChatbotTeacher extends AppCompatActivity {
         messageAdapter = new MessageAdapter(this, new ArrayList<Message>());
         messagesList.setAdapter(messageAdapter);
 
-        welcomeMessage(); // start message asking user for name
-
         primaryToken = getMetaData(getBaseContext(),"botPrimaryToken");
         botName = getMetaData(getBaseContext(),"botName").toLowerCase();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         runnable.run();
 
         final String conversationTokenInfo = startConversation();
+
+        wakeUpBot(conversationTokenInfo); // start message asking user for name
 
         //listen for a click on the send button
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -122,8 +120,6 @@ public class ChatbotTeacher extends AppCompatActivity {
                 messageAdapter.addMessage(userMessage);
                 messageBodyField.setText("");
 
-
-                //String conversationTokenInfo = responseValueText.getText().toString();
                 JSONObject jsonObject = null;
 
                  if(conversationTokenInfo != "") {
@@ -213,11 +209,37 @@ public class ChatbotTeacher extends AppCompatActivity {
         return responseValue;
     }
 
+    /*
+     * Send message to wake up bot - will then receive welcome message
+     */
+    private void wakeUpBot(String conversationTokenInfo) {
+        Message wakeMessage = new Message("Wake up!", DIRECTION_USER);
+        wakeMessage.setId(206); //dummy
+        wakeMessage.setDate(DateFormat.getDateTimeInstance().format(new Date()));
 
-    private void welcomeMessage() {
-      String helloMsg = "Hello! Welcome to your Octocat - your one stop app for the pursuit of knowledge. How may I address you?";
-      Message welcome = new Message(helloMsg,DIRECTION_BOT);
-      displayMessage(welcome);
+        JSONObject jsonObject = null;
+
+        if(conversationTokenInfo != "") {
+            try {
+                jsonObject = new JSONObject(conversationTokenInfo);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //send message to bot and get the response using the api conversations/{conversationid}/activities
+        if(jsonObject != null) {
+            try {
+                conversationId = jsonObject.get("conversationId").toString();
+                localToken = jsonObject.get("token").toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(conversationId != "") {
+            sendMessageToBot(wakeMessage.getMessage());
+        }
     }
 
     //sends the message by making it an activity to the bot

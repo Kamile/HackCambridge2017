@@ -35,12 +35,12 @@ public class PieChartFragment extends Fragment {
     private PieChart pieChart;
 
     //TODO: Use real values
-    private int[] yValues = {21,3};
+    private int[] yValues = {24,3};
     private String[] xValues = {"Correct answers", "Incorrect answers"};
 
     // define colours
     public static final int[] COLOURS = {
-            Color.rgb(84,124,101), Color.rgb(64,64,64), Color.rgb(153,19,0),
+            Color.rgb(144, 198, 149), Color.rgb(236,100,75), Color.rgb(153,19,0),
             Color.rgb(38,40,53), Color.rgb(215,60,55)
     };
 
@@ -49,8 +49,8 @@ public class PieChartFragment extends Fragment {
     public static PieChartFragment newInstance(int page, String title) {
         PieChartFragment fragmentFirst = new PieChartFragment();
         Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
+        args.putInt("1", page);
+        args.putString("Correct vs Incorrect answers", title);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -124,7 +124,7 @@ public class PieChartFragment extends Fragment {
         PieData data = new PieData(dataSet);
 
         data.setValueFormatter(new MyValueFormatter());
-        data.setValueTextSize(11f);
+        data.setValueTextSize(13f);
         data.setValueTextColor(Color.WHITE);
 
         pieChart.setData(data);
@@ -140,9 +140,9 @@ public class PieChartFragment extends Fragment {
 
 
         // Legends to show on bottom of the graph
-        Legend l = pieChart.getLegend();
-        l.setXEntrySpace(7);
-        l.setYEntrySpace(5);
+//        Legend l = pieChart.getLegend();
+//        l.setXEntrySpace(7);
+//        l.setYEntrySpace(5);
     }
 
 

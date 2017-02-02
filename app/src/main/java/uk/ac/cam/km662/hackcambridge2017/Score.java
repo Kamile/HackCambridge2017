@@ -83,19 +83,11 @@ public class Score {
     
     public int[] getTopicScores() { return topicScores;}
 
-    public int getCorrectQuestions(){
-        return correctQuestions;
-    }
+    public int getCorrectQuestions(){ return correctQuestions;}
 
-    public int getIncorrectQuestions() {
-        return incorrectQuestions;
-    }
+    public int getIncorrectQuestions() {return incorrectQuestions;}
 
-    public void incrementQuestionScore(){
-        correctQuestions += 1;
-    }
+    public void incrementQuestionScore(){correctQuestions += 1;}
 
-    public void decrementQuestionScore(){
-        incorrectQuestions -= 1;
-    }
+    public void decrementQuestionScore(){incorrectQuestions -= 1;}
 }
